@@ -1,3 +1,5 @@
+import { data } from "./data"
+
 console.log("haliho!")
 console.log("haliasdfasdfho2!")
-console.log("asdfgasf")
+console.log(data)
