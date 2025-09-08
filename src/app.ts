@@ -1,5 +1,5 @@
 import { data } from "./data"
+import Kutya from "./kutya"
 
-console.log("haliho!")
-console.log("haliasdfasdfho2!")
-console.log(data)
+const kutya : Kutya = new Kutya(data[0])
+console.log(kutya.dog())
