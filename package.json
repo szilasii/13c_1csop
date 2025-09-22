@@ -1,18 +1,41 @@
 {
   "name": "13c_1csop",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec tsx ./src/app.ts",
-    "build": "tsc"
+    "test": "jest",
+    "build": "tsc",
+    "lint": "tslint -c tslint.json src/**/*.ts",
+    "prepublish": "npm run build",
+    "dev": "nodemon --exec tsx ./src/index.ts"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/szilasii/13c_1csop.git"
+  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/szilasii/13c_1csop/issues"
+  },
+  "homepage": "https://github.com/szilasii/13c_1csop#readme",
   "description": "",
+  "dependencies": {
+    "ts-node": "^10.9.2",
+    "tslint": "^5.20.1",
+    "tsx": "^4.20.5"
+  },
+  "files": [
+    "./bin/*",
+    "./lib/*"
+  ],
+  "typings": "./lib/index.d.ts",
   "devDependencies": {
+    "@types/express": "^5.0.3",
+    "express": "^5.1.0",
     "nodemon": "^3.1.10",
-    "typescript": "^5.9.2",
-     "tsx": "^4.20.5"
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.2"
   }
 }

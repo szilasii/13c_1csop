@@ -1,47 +1,37 @@
 {
-  // Visit https://aka.ms/tsconfig to read more about this file
-  "compilerOptions": {
-    // File Layout
-     "rootDir": "./src",
-     "outDir": "./dist",
+	"compilerOptions": {
+		"target": "es2020",
+		"module": "commonjs",
+		"lib": [
+			"es2015"
+		],
 
-    // Environment Settings
-    // See also https://aka.ms/tsconfig/module
-    "module": "esnext",
-    "target": "esnext",
-    "types": [],
-    // For nodejs:
-    // "lib": ["esnext"],
-    // "types": ["node"],
-    // and npm install -D @types/node
+		"rootDir": "src",
+		"outDir": "dist",
 
-    // Other Outputs
-    //"sourceMap": true,
-    //"declaration": true,
-    //"declarationMap": true,
+		"strict": true,
+		"alwaysStrict": true,
+		"strictFunctionTypes": true,
+		"strictNullChecks": true,
+		"strictPropertyInitialization": true,
 
-    // Stricter Typechecking Options
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
 
-    // Style Options
-    // "noImplicitReturns": true,
-    // "noImplicitOverride": true,
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
-    // "noFallthroughCasesInSwitch": true,
-    // "noPropertyAccessFromIndexSignature": true,
-   //"noEmit": false,
-    // "allowImportingTsExtensions": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"downlevelIteration": true,
+		"declaration": true,
 
-    // Recommended Options
-    "strict": true,
-    //"jsx": "react-jsx",
-   // "verbatimModuleSyntax": true,
-   // "isolatedModules": true,
-   // "noUncheckedSideEffectImports": true,
-  //  "moduleDetection": "force",
-  //  "skipLibCheck": true,
-  },
-"include": ["**/*.ts","*/*.ts"]  
+		"pretty": true
+	},
+	"include": [
+		"typings/**/*",
+		"src/**/*"
+	]
 }
