@@ -1,10 +1,12 @@
 
 
 import { Router } from "express"
-import { valasz, valasz2 } from "./controller"
+import { getALLData, insertData, run,  } from "./controller"
+
 
 const router: Router = Router()
 
-router.get("/api", valasz) 
-router.post("/api",valasz2)
+router.get("/", run ) 
+router.get("/dog", getALLData)
+router.post("/dog",insertData)
 export default router

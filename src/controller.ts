@@ -1,7 +1,15 @@
-export const valasz = (req:any,res:any) => {
- res.status(200).send("zerzter")
+import data from "./data"
+
+export const run = (_req:any,res:any) => {
+ res.status(200).send("A szerver fut")
 }
 
-export const valasz2 = (req:any,res:any) => {
- res.status(200).send({maci:"maci"})
+export const getALLData = (_req:any,res:any) => {
+ res.status(200).send(data)
+}
+export const insertData = (req:Request,res:any) => {
+    
+    const dog:any = req.body
+    console.log(req.body)
+    res.status(200).send(dog)
 }
