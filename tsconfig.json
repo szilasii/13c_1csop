@@ -5,16 +5,13 @@
 		"lib": [
 			"es2015"
 		],
-
 		"rootDir": "src",
 		"outDir": "dist",
-
 		"strict": true,
 		"alwaysStrict": true,
 		"strictFunctionTypes": true,
 		"strictNullChecks": true,
 		"strictPropertyInitialization": true,
-
 		"forceConsistentCasingInFileNames": true,
 		"noImplicitAny": true,
 		"noImplicitReturns": true,
@@ -27,7 +24,6 @@
 		"experimentalDecorators": true,
 		"downlevelIteration": true,
 		"declaration": true,
-
 		"pretty": true
 	},
 	"include": [

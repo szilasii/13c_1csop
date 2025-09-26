@@ -1,4 +1,4 @@
-const  data = [
+const  data:any = [
     {
         "id": 1,
         "nev": "Mendy",
