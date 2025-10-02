@@ -1,4 +1,6 @@
-const  data:any = [
+import { IDog } from "./dog"
+
+const  data: IDog[] = [
     {
         "id": 1,
         "nev": "Mendy",
