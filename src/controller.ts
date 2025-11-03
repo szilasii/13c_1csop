@@ -1,13 +1,28 @@
-import data from "./data"
+
 import { Request, Response } from "express"
 import Dog, { IDog } from "./dog"
+import config from "./config"
+import mysql from "mysql2/promise"
 
 export const run = (_req: Request, res: Response) => {
     res.status(200).send("A szerver fut")
 }
 
-export const getALLData = (_req: Request, res: Response) => {
-    res.status(200).send(data)
+export const getALLData = async (_req: Request, res: Response) => {
+    const connection = await mysql.createConnection(config.database);
+
+    try {
+        const [results] = await connection.query(
+            'SELECT * FROM dog'
+        );
+        res.status(200).send(results)
+    } catch (err) {
+        console.log(err);
+    }
+
+
+
+    
 }
 
 export const getDataFromId = (req: Request, res: Response) => {
@@ -16,12 +31,8 @@ export const getDataFromId = (req: Request, res: Response) => {
         res.status(400).send("Hibás paraméter!")
         return
     }
-    const dog: IDog | undefined = data.find((i: IDog) => i.id === id)
-    if (!dog) {
-        res.status(404).send("Nem található a törlendő index!")
-        return
-    }
-    res.status(201).send(dog)
+
+    res.status(201).send()
 }
 
 
@@ -41,9 +52,7 @@ export const insertData = (req: Request, res: Response) => {
     }
 
 
-    dog.id = Math.max(...data.map((d: IDog) => d.id)) + 1
-    data.push(dog)
-    res.status(201).send(dog)
+
 }
 export const deleteDataFromId = (req: Request, res: Response) => {
 
@@ -52,13 +61,7 @@ export const deleteDataFromId = (req: Request, res: Response) => {
         res.status(400).send("Hibás paraméter!")
         return
     }
-    const index: number = data.findIndex((i: IDog) => i.id === id)
-    if (index === -1) {
-        res.status(404).send("Nem található a törlendő index!")
-        return
-    }
-    data.splice(index, 1)
-    res.status(204).send()
+
 }
 
 export const putData = (req: Request, res: Response) => {
@@ -67,11 +70,7 @@ export const putData = (req: Request, res: Response) => {
         res.status(400).send("Hibás paraméter!")
         return
     }
-    const index: number = data.findIndex((i: IDog) => i.id === id)
-    if (index === -1) {
-        insertData(req, res)
-        return
-    }
+
 
     if (!req.body) {
         res.status(400).send("Nem adott meg adatokat!")
@@ -85,9 +84,7 @@ export const putData = (req: Request, res: Response) => {
         res.status(400).send("Nem adott meg adatokat!")
         return
     }
-    reqDog.id = id
-    data[index] = reqDog
-    res.status(201).send(data)
+
 }
 
 
@@ -98,18 +95,14 @@ export const patchData = (req: Request, res: Response) => {
         res.status(400).send("Hibás paraméter!")
         return
     }
-    const index: number = data.findIndex((i: IDog) => i.id === id)
-    if (index === -1) {
-        res.status(404).send("A megadott id nem létezik")
-        return
-    }
+
 
     if (!req.body) {
         res.status(400).send("Nem adott meg adatokat!")
         return
     }
 
-    let reqDog: Dog = new Dog(req.body as unknown as IDog)
+    //let reqDog: Dog = new Dog(req.body as unkown as Dog)
 
     // for (const key in reqDog) {
     //     const k = key as keyof Dog
@@ -118,13 +111,13 @@ export const patchData = (req: Request, res: Response) => {
     //     }
     // }
 
-    Object.assign(data[index], {
-        nev: reqDog.nev || data[index].nev,
-        fajta: reqDog.fajta || data[index].fajta,
-        eletkor: reqDog.eletkor || data[index].eletkor,
-        nem: reqDog.nem || data[index].nem,
-        kepUrl: reqDog.kepUrl || data[index].kepUrl
-    })
+    // Object.assign(data[index], {
+    //     nev: reqDog.nev || data[index].nev,
+    //     fajta: reqDog.fajta || data[index].fajta,
+    //     eletkor: reqDog.eletkor || data[index].eletkor,
+    //     nem: reqDog.nem || data[index].nem,
+    //     kepUrl: reqDog.kepUrl || data[index].kepUrl
+    // })
 
 
     // data[index].nev  = reqDog.nev || data[index].nev
@@ -132,9 +125,19 @@ export const patchData = (req: Request, res: Response) => {
     // data[index].eletkor  = reqDog.eletkor || data[index].eletkor
     // data[index].nem  = reqDog.nem || data[index].nem
     // data[index].kepUrl  = reqDog.kepUrl || data[index].kepUrl
-    res.status(201).send(data)
+
 }
 
+
+
+// function applyPatch<T extends object>(target: T, patch: Partial<T>) {
+//   (Object.keys(patch) as Array<keyof T>).forEach((k) => {
+//     const v = patch[k];
+//     if (v !== undefined && v !== null && v !== '') {
+//       target[k] = v as T[typeof k];
+//     }
+//   });
+// }
 
 
 

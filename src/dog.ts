@@ -4,7 +4,7 @@ export interface IDog {
     fajta: string,
     nem: boolean,
     eletkor: number
-    kepUrl: string
+    kepUrl?: string
 }
 
 export default class Dog implements IDog {
@@ -13,7 +13,7 @@ export default class Dog implements IDog {
     fajta: string
     nem: boolean
     eletkor: number
-    kepUrl: string
+    kepUrl?: string
    
     constructor(dog: IDog ) {
             this.id = dog.id
