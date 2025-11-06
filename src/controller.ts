@@ -19,24 +19,34 @@ export const getALLData = async (_req: Request, res: Response) => {
     } catch (err) {
         console.log(err);
     }
-
-
-
-    
 }
 
-export const getDataFromId = (req: Request, res: Response) => {
+export const getDataFromId = async (req: Request, res: Response) => {
     let id: number = parseInt(req.params.id)
     if (isNaN(id)) {
         res.status(400).send("Hibás paraméter!")
         return
     }
+    const connection = await mysql.createConnection(config.database);
 
-    res.status(201).send()
+    try {
+        const [results] = await connection.query(
+            'SELECT * FROM dog where id = ?', [id]
+        ) as Array<any>
+
+        if (results.length > 0) {
+            res.status(200).send(results)
+            return
+        }
+        res.status(404).send("Nincs ilyen adat!")
+    } catch (err) {
+        console.log(err);
+    }
+
 }
 
 
-export const insertData = (req: Request, res: Response) => {
+export const insertData = async (req: Request, res: Response) => {
 
     if (!req.body) {
         res.status(400).send("Nem adott meg adatokat!")
@@ -46,15 +56,26 @@ export const insertData = (req: Request, res: Response) => {
 
     let dog: Dog = new Dog(req.body as unknown as IDog)
 
+
+
     if (dog.nev === "" || dog.fajta === "") {
         res.status(400).send("Nem adott meg adatokat!")
         return
     }
+    const connection = await mysql.createConnection(config.database);
 
+    try {
+        const [results] = await connection.query(
+            'insert into dog values (null,?,?,?,?,?)', [dog.nev,dog.fajta, dog.nem ? 1:0,parseInt(dog.eletkor as unknown as string),dog.kepUrl]
+        ) as Array<any>
+        res.status(200).send(results.insertId)
+    } catch (err) {
+        console.log(err);
+    }
 
 
 }
-export const deleteDataFromId = (req: Request, res: Response) => {
+export const deleteDataFromId = async (req: Request, res: Response) => {
 
     let id: number = parseInt(req.params.id)
     if (isNaN(id)) {
@@ -62,9 +83,20 @@ export const deleteDataFromId = (req: Request, res: Response) => {
         return
     }
 
+     const connection = await mysql.createConnection(config.database);
+
+    try {
+        const [results] = await connection.query(
+            'delete from dog where id = ?',[id]
+        ) as Array<any>
+        res.status(200).send(results)
+    } catch (err) {
+        console.log(err);
+    }
+
 }
 
-export const putData = (req: Request, res: Response) => {
+export const putData = async (req: Request, res: Response) => {
     let id: number = parseInt(req.params.id)
     if (isNaN(id)) {
         res.status(400).send("Hibás paraméter!")
@@ -83,6 +115,24 @@ export const putData = (req: Request, res: Response) => {
     if (reqDog.nev === "" || reqDog.fajta === "") {
         res.status(400).send("Nem adott meg adatokat!")
         return
+    }
+
+    const connection = await mysql.createConnection(config.database);
+
+    const updateString: string = req.body
+    
+    const sqlCmd:string = `update dog set ${updateString}  where id = ?`
+
+    console.log(sqlCmd)
+    return
+
+    try {
+        const [results] = await connection.query(
+            sqlCmd,[id]
+        ) as Array<any>
+        res.status(200).send(results)
+    } catch (err) {
+        console.log(err);
     }
 
 }
