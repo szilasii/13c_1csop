@@ -1,28 +1,30 @@
 export interface IDog {
-    id: number
-    nev: string,
-    fajta: string,
-    nem: boolean,
-    eletkor: number
-    kepUrl?: string
+    id: number | undefined | null
+    name: string,
+    breed: string,
+    gender: boolean | string,
+    age: number | string | null
+    picurl: string | null
 }
 
 export default class Dog implements IDog {
-    id: number
-    nev: string
-    fajta: string
-    nem: boolean
-    eletkor: number
-    kepUrl?: string
+    id: number | undefined | null
+    name: string = ""
+    breed: string = ""
+    gender: boolean = false
+    age: number | null = null
+    picurl: string | null = null
    
-    constructor(dog: IDog ) {
-            this.id = dog.id
-            this.nev = dog.nev || ""
-            this.fajta = dog.fajta || ""
-            this.eletkor = dog.eletkor
-            this.nem = dog.nem
-            this.kepUrl = dog.kepUrl
-            
+    constructor(init: IDog) {
+         this.name = init.name
+         this.breed = init.breed
+         this.gender = init.gender === true || init.gender === "true"
+         this.age = typeof init.age === "string" ? parseInt(init.age) : init.age ?? null;
+         this.picurl = init.picurl
+         
+
+
+        //  Object.assign(this, init as Partial<Dog>)        
    }
   
 } 

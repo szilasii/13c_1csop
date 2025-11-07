@@ -58,7 +58,7 @@ export const insertData = async (req: Request, res: Response) => {
 
 
 
-    if (dog.nev === "" || dog.fajta === "") {
+    if (dog.name === "" || dog.breed === "") {
         res.status(400).send("Nem adott meg adatokat!")
         return
     }
@@ -66,7 +66,7 @@ export const insertData = async (req: Request, res: Response) => {
 
     try {
         const [results] = await connection.query(
-            'insert into dog values (null,?,?,?,?,?)', [dog.nev,dog.fajta, dog.nem ? 1:0,parseInt(dog.eletkor as unknown as string),dog.kepUrl]
+            'insert into dog values (null,?,?,?,?,?)', [dog.name,dog.breed, dog.breed ? 1:0,parseInt(dog.age as unknown as string),dog.picurl]
         ) as Array<any>
         res.status(200).send(results.insertId)
     } catch (err) {
@@ -110,27 +110,41 @@ export const putData = async (req: Request, res: Response) => {
     }
 
 
-    let reqDog: Dog = new Dog(req.body as unknown as IDog)
+    let reqDog: any = new Dog(req.body as unknown as IDog)
 
     if (reqDog.nev === "" || reqDog.fajta === "") {
         res.status(400).send("Nem adott meg adatokat!")
         return
     }
+    const allowedFields = ['name','breed','gender','age','picurl']
+    const keys = Object.keys(reqDog).filter(key => allowedFields.includes(key))
+
+    if (keys.length === 0) { 
+        res.status(400).send({ error: 103, messege: "Nincs frissítendő mező!" })
+        return
+    }
 
     const connection = await mysql.createConnection(config.database);
 
-    const updateString: string = req.body
+    const updateString = keys.map(key => `${key} = ?`).join(', ')
+    const values = keys.map(key => reqDog[key])
+    values.push(id)
     
     const sqlCmd:string = `update dog set ${updateString}  where id = ?`
 
     console.log(sqlCmd)
-    return
-
+    
     try {
         const [results] = await connection.query(
-            sqlCmd,[id]
+            sqlCmd,values
         ) as Array<any>
-        res.status(200).send(results)
+
+        if (results.affectedRows !=0) {
+             res.status(200).send("Sikeres adatrögzítés")
+             return
+        }
+        insertData(req,res)
+       
     } catch (err) {
         console.log(err);
     }
@@ -139,8 +153,8 @@ export const putData = async (req: Request, res: Response) => {
 
 
 
-export const patchData = (req: Request, res: Response) => {
-    let id: number = parseInt(req.params.id)
+export const patchData = async (req: Request, res: Response) => {
+   let id: number = parseInt(req.params.id)
     if (isNaN(id)) {
         res.status(400).send("Hibás paraméter!")
         return
@@ -152,42 +166,46 @@ export const patchData = (req: Request, res: Response) => {
         return
     }
 
-    //let reqDog: Dog = new Dog(req.body as unkown as Dog)
 
-    // for (const key in reqDog) {
-    //     const k = key as keyof Dog
-    //     if (reqDog[k]) {
-    //         data[index][key] = reqDog[k]
-    //     }
-    // }
+    let reqDog: any = new Dog(req.body as unknown as IDog)
 
-    // Object.assign(data[index], {
-    //     nev: reqDog.nev || data[index].nev,
-    //     fajta: reqDog.fajta || data[index].fajta,
-    //     eletkor: reqDog.eletkor || data[index].eletkor,
-    //     nem: reqDog.nem || data[index].nem,
-    //     kepUrl: reqDog.kepUrl || data[index].kepUrl
-    // })
+   
+    const allowedFields = ['name','breed','gender','age','picurl']
+    const keys = Object.keys(reqDog).filter(key => allowedFields.includes(key))
 
+    if (keys.length === 0) { 
+        res.status(400).send({ error: 103, messege: "Nincs frissítendő mező!" })
+        return
+    }
 
-    // data[index].nev  = reqDog.nev || data[index].nev
-    // data[index].fajta  = reqDog.fajta || data[index].fajta
-    // data[index].eletkor  = reqDog.eletkor || data[index].eletkor
-    // data[index].nem  = reqDog.nem || data[index].nem
-    // data[index].kepUrl  = reqDog.kepUrl || data[index].kepUrl
+    const connection = await mysql.createConnection(config.database);
+
+    const updateString = keys.map(key => `${key} = ?`).join(', ')
+    const values = keys.map(key => reqDog[key])
+    values.push(id)
+    
+    const sqlCmd:string = `update dog set ${updateString}  where id = ?`
+
+    console.log(sqlCmd)
+    
+    try {
+        const [results] = await connection.query(
+            sqlCmd,values
+        ) as Array<any>
+
+        if (results.affectedRows !=0) {
+             res.status(200).send("Sikeres adatrögzítés")
+             return
+        }
+    res.status(200).send("Adatmódosítás nem történt")
+       
+    } catch (err) {
+        console.log(err);
+    }
 
 }
 
 
-
-// function applyPatch<T extends object>(target: T, patch: Partial<T>) {
-//   (Object.keys(patch) as Array<keyof T>).forEach((k) => {
-//     const v = patch[k];
-//     if (v !== undefined && v !== null && v !== '') {
-//       target[k] = v as T[typeof k];
-//     }
-//   });
-// }
 
 
 
