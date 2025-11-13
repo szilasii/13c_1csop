@@ -12,7 +12,8 @@ class DBConfig {
 }
 
 const config: any = {
-    database : new DBConfig()
+    database : new DBConfig(),
+    jwtSecret : process.env.JWT_SECRET
 }
 
 export default config
