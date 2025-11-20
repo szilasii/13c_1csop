@@ -1,7 +1,7 @@
 
 import { Request, Response } from "express"
 import Dog, { IDog } from "./dog"
-import config from "./config"
+import config from "../config/config"
 import mysql from "mysql2/promise"
 
 export const run = (_req: Request, res: Response) => {

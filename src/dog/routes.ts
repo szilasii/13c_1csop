@@ -1,12 +1,12 @@
 
 
 import { Router } from "express"
-import { deleteDataFromId, getALLData, getDataFromId, insertData, patchData, putData, run,  } from "./controller"
-import verifyToken from "./auth"
+import { deleteDataFromId, getALLData, getDataFromId, insertData, patchData, putData, run,  } from "./dog_controller"
+import verifyToken from "../middleware/auth"
 
 const router: Router = Router()
 
-router.get("/", run ) 
+
 router.get("/dogs", verifyToken, getALLData)
 router.get("/dogs/:id", getDataFromId)
 router.post("/dogs",insertData)

@@ -1,5 +1,5 @@
 import express from "express"
-import router from "./routes"
+import router from "../dog/routes"
 import bodyParser from "body-parser"
 import cors from "cors"
 
