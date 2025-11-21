@@ -1,4 +1,4 @@
-create database dog CHARACTER set = 'utf8' COLLATE = 'utf8_hungaruian_ci';
+create database dog CHARACTER set = 'utf8' COLLATE = 'utf8_hungarian_ci';
 
 create table dog (id int AUTO_INCREMENT PRIMARY KEY,
                  name VARCHAR(100) not null,
@@ -49,7 +49,9 @@ end;
 
 
 select login('teszt1@gmail.com',"titok");
-
+ 
 drop trigger insert_user;
-insert into user values (null, "teszt1@gmail.com","titok"),
-(null,"teszt2@gmail.com","jelszo")
+ALTER table users AUTO_INCREMENT = 1;
+insert into users values (null, "teszt1@gmail.com","titok"),
+(null,"teszt2@gmail.com","jelszo");
+delete from users;

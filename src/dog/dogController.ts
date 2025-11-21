@@ -8,9 +8,9 @@ export const run = (_req: Request, res: Response) => {
     res.status(200).send("A szerver fut")
 }
 
-export const getALLData = async (_req: Request, res: Response) => {
+export const getALLData = async (req: any, res: Response) => {
     const connection = await mysql.createConnection(config.database);
-
+    console.log(req.user)
     try {
         const [results] = await connection.query(
             'SELECT * FROM dog'
