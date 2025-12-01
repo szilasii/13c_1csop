@@ -1,7 +1,7 @@
 
 
 import { Router } from "express"
-import { deleteDataFromId, getALLData, getDataFromId, insertData, patchData, putData, run,  } from "./dogController"
+import { deleteDataFromId, getALLData, getDataFromId, insertData, patchData, putData  } from "./dogController"
 import verifyToken from "../middleware/auth"
 
 const router: Router = Router()
