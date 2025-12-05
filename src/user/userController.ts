@@ -22,7 +22,7 @@ export const signIn = async (req: any, res: any) => {
         if (!config.jwtSecret) {
             return res.status(401).send("Hiba a titkos kulcsnál!")
         }
-        const token = jwt.sign({id:results[0].id},config.jwtSecret,{expiresIn:"2h"})
+        const token = jwt.sign({userId:results[0].id},config.jwtSecret,{expiresIn:"2h"})
 
 
 
